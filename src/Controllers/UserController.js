@@ -1,6 +1,7 @@
 import UserSchema from '../Models/User.js';
 import bcrypt from 'bcrypt';
 import jsonwebtoken from 'jsonwebtoken';
+import User from '../Models/User.js';
 
 
 const jwt = jsonwebtoken
@@ -11,7 +12,7 @@ const SECRET_KEY = "THISISSECRETKEY"
 //#region sigup Implementation
 
 export const signup = async (req,res)=>{
-    const {username, email, password} = req.body
+    const {username, email, password} = req.body;
     try {
         //#region checking for existing user
         const existingUser = await UserSchema.findOne({email : email})
@@ -82,6 +83,35 @@ const {email, password} = req.body;
         console.log(error);
         res.status(500).json({message: "Something went Wrong 😫"})
     }
+
+}
+
+//#endregion
+
+//#region Update Password
+export const forgetPassword = async (req,res)=>{
+   try {
+    const user_email = req.body.user_email
+    const password = req.body.password
+
+    const data = await User.findOne({email:user_email});
+    if (data) {
+        const newPassword =  await bcrypt.hash(password, 10 ) // 10 is also called salt it define how many time it will run for hashing
+        const userData =  await User.findOneAndUpdate({email:user_email},{$set:{
+            password:newPassword
+        }})
+
+        res.status(200).send({success:true, msg:`your password has been updated`})
+
+    } else {
+        res.status(200).send({success: false, msg: `User Id not Found`})
+    }
+
+
+   } catch (error) {
+    res.status(400).json({message: `something went wrong`})
+   }
+
 
 }
 
