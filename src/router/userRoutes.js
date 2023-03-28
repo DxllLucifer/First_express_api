@@ -1,6 +1,6 @@
 import express from 'express';
 import { forgetPassword, signin, signup } from '../Controllers/UserController.js';
-import { sendMail } from '../Controllers/sendMail.js';
+import { sendMail } from '../Controllers/sendMailController.js';
 
 const userRouter = express.Router()
 
