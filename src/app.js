@@ -20,7 +20,7 @@ app.get("/", (req,res)=>{
     res.send("Hello")
 })
 
-mongoose.connect("mongodb+srv://admin:admin@cluster0.q5cr3ka.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect("url")
 .then(()=>{    
 app.listen(port,()=>console.log(`listen port ${port}`))
 }).catch((err)=>{
